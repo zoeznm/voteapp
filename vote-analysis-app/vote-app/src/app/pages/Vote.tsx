@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import VoteButton from '../components/VoteButton';
+import VoteForm from '../components/VoteForm'; // VoteForm을 임포트합니다.
 import { useVote } from '../hooks/useVote';
 import styled from 'styled-components'; // Styled Components를 임포트합니다.
 
@@ -41,6 +42,10 @@ const Vote: React.FC = () => {
   return (
     <Container>
       <Title>Vote for Your Favorite Option</Title>
+      
+      {/* VoteForm 컴포넌트를 추가하여 사용자에게 옵션 추가 기능을 제공 */}
+      <VoteForm /> 
+
       {options.map((option) => (
         <VoteButton key={option} option={option} onVote={handleVote} />
       ))}

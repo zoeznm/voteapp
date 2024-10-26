@@ -1,0 +1,9 @@
+{
+  "name": "vote-analysis-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/vote-analysis-app/src",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project vote-analysis-app --web",
+  "targets": {}
+}

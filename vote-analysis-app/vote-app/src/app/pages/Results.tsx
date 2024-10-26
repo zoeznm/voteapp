@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Link 컴포넌트 가져오기
 import ResultChart from '../components/ResultChart';
 import { useVote } from '../hooks/useVote'; // useVote 훅 가져오기
 
@@ -19,6 +20,9 @@ const Results: React.FC = () => {
       <h2>투표 결과</h2>
       <button onClick={handleReset}>결과 초기화</button>
       <ResultChart results={results} /> {/* results를 ResultChart에 전달 */}
+      <Link to="/vote"> {/* 투표 다시 하기 버튼 추가 */}
+        <button>투표 다시 하기</button>
+      </Link>
     </div>
   );
 };

@@ -1,52 +1,53 @@
+// Results.tsx
+
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ResultChart from '../components/ResultChart';
 import { useVote } from '../hooks/useVote';
-import styled from 'styled-components'; // Styled Components를 임포트합니다.
+import styled from 'styled-components';
 
-// 스타일을 정의합니다.
 const Container = styled.div`
-  text-align: center; /* 텍스트 중앙 정렬 */
-  margin-top: 50px; /* 위쪽 여백 */
+  text-align: center;
+  margin-top: 50px;
 `;
 
 const Title = styled.h2`
-  font-size: 2rem; /* 제목 크기 */
-  color: #333; /* 제목 색상 */
-  margin-bottom: 20px; /* 아래쪽 여백 */
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
 `;
 
 const ResetButton = styled.button`
-  padding: 10px 20px; /* 패딩 */
-  background-color: #dc3545; /* 배경 색상 */
-  color: white; /* 텍스트 색상 */
-  border: none; /* 테두리 제거 */
-  border-radius: 5px; /* 모서리 둥글게 */
-  cursor: pointer; /* 커서 모양 변경 */
-  margin-bottom: 20px; /* 아래쪽 여백 */
-  transition: background-color 0.3s; /* 배경 색상 변화에 애니메이션 추가 */
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #c82333; /* 호버 시 배경 색상 변화 */
+    background-color: #c82333;
   }
 `;
 
 const ResetLink = styled(Link)`
-  display: inline-block; /* 링크를 블록으로 설정 */
-  text-decoration: none; /* 밑줄 제거 */
+  display: inline-block;
+  text-decoration: none;
 `;
 
 const VoteButton = styled.button`
-  padding: 10px 20px; /* 패딩 */
-  background-color: #007bff; /* 배경 색상 */
-  color: white; /* 텍스트 색상 */
-  border: none; /* 테두리 제거 */
-  border-radius: 5px; /* 모서리 둥글게 */
-  cursor: pointer; /* 커서 모양 변경 */
-  transition: background-color 0.3s; /* 배경 색상 변화에 애니메이션 추가 */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #0056b3; /* 호버 시 배경 색상 변화 */
+    background-color: #0056b3;
   }
 `;
 
@@ -66,9 +67,9 @@ const Results: React.FC = () => {
     <Container>
       <Title>투표 결과</Title>
       <ResetButton onClick={handleReset}>결과 초기화</ResetButton>
-      <ResultChart results={results} /> {/* results를 ResultChart에 전달 */}
-      <ResetLink to="/vote"> {/* 투표 다시 하기 버튼 추가 */}
-        <VoteButton>투표 다시 하기</VoteButton> {/* 스타일이 적용된 VoteButton 사용 */}
+      <ResultChart results={results} /> {/* results를 props로 전달 */}
+      <ResetLink to="/vote">
+        <VoteButton>투표 다시 하기</VoteButton>
       </ResetLink>
     </Container>
   );

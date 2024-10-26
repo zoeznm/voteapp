@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
  *          results: 현재 투표 결과
  *          submitVote: 선택된 옵션으로 투표를 제출하는 함수
  *          fetchResults: 현재 투표 결과를 가져오는 함수
+ *          resetResults: 투표 결과를 초기화하는 함수
  */
 export const useVote = () => {
   const [options] = useState<string[]>(['Option 1', 'Option 2', 'Option 3']);
@@ -18,7 +19,7 @@ export const useVote = () => {
         ...prevResults,
         [option]: (prevResults[option] || 0) + 1,
       };
-  
+
       // 로컬 스토리지에 저장
       localStorage.setItem('voteResults', JSON.stringify(updatedResults));
       return updatedResults; // 상태를 업데이트
@@ -32,9 +33,14 @@ export const useVote = () => {
     }
   };
 
+  const resetResults = () => {
+    setResults({}); // 상태를 초기화
+    localStorage.removeItem('voteResults'); // 로컬 스토리지 초기화
+  };
+
   useEffect(() => {
     fetchResults(); // 초기 결과를 가져오는 함수 호출
   }, []);
 
-  return { options, results, submitVote, fetchResults }; // fetchResults 추가
+  return { options, results, submitVote, fetchResults, resetResults }; // resetResults 추가
 };

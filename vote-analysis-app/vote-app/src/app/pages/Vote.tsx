@@ -1,29 +1,54 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Link 컴포넌트 가져오기
-import VoteButton from '../components/VoteButton'; // 투표 버튼 컴포넌트를 가져옵니다.
-import { useVote } from '../hooks/useVote'; // 사용자 정의 훅을 가져옵니다.
+import { Link } from 'react-router-dom';
+import VoteButton from '../components/VoteButton';
+import { useVote } from '../hooks/useVote';
+import styled from 'styled-components'; // Styled Components를 임포트합니다.
+
+// 스타일을 정의합니다.
+const Container = styled.div`
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin-top: 50px; /* 위쪽 여백 */
+`;
+
+const Title = styled.h1`
+  font-size: 2.5rem; /* 제목 크기 */
+  color: #333; /* 제목 색상 */
+  margin-bottom: 30px; /* 아래쪽 여백 */
+`;
+
+const StyledLink = styled(Link)`
+  display: inline-block; /* 링크를 블록으로 설정 */
+  padding: 10px 20px; /* 패딩 */
+  background-color: #007bff; /* 배경 색상 */
+  color: white; /* 텍스트 색상 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  text-decoration: none; /* 밑줄 제거 */
+  margin-top: 20px; /* 위쪽 여백 */
+  transition: background-color 0.3s; /* 배경 색상 변화에 애니메이션 추가 */
+
+  &:hover {
+    background-color: #0056b3; /* 호버 시 배경 색상 변화 */
+  }
+`;
 
 const Vote: React.FC = () => {
-  // useVote 훅을 사용하여 옵션과 submitVote 함수를 가져옵니다.
   const { options, submitVote } = useVote();
 
-  // 사용자가 투표 버튼을 클릭했을 때 호출되는 함수
   const handleVote = (option: string) => {
-    submitVote(option); // 선택한 옵션으로 투표를 제출합니다.
+    submitVote(option);
   };
 
   return (
-    <div className="vote-container">
-      <h1>Vote for Your Favorite Option</h1> {/* 투표 제목 */}
+    <Container>
+      <Title>Vote for Your Favorite Option</Title>
       {options.map((option) => (
-        // 각 옵션에 대한 VoteButton 컴포넌트를 렌더링합니다.
         <VoteButton key={option} option={option} onVote={handleVote} />
       ))}
-      <Link to="/results"> {/* 결과 보기 버튼 추가 */}
-        <button>결과 보기</button>
-      </Link>
-    </div>
+      <StyledLink to="/results"> {/* 결과 보기 버튼 추가 */}
+        결과 보기
+      </StyledLink>
+    </Container>
   );
 };
 
-export default Vote; // Vote 컴포넌트를 내보냅니다.
+export default Vote;

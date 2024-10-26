@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Link 컴포넌트 가져오기
 import VoteButton from '../components/VoteButton'; // 투표 버튼 컴포넌트를 가져옵니다.
 import { useVote } from '../hooks/useVote'; // 사용자 정의 훅을 가져옵니다.
 
@@ -18,6 +19,9 @@ const Vote: React.FC = () => {
         // 각 옵션에 대한 VoteButton 컴포넌트를 렌더링합니다.
         <VoteButton key={option} option={option} onVote={handleVote} />
       ))}
+      <Link to="/results"> {/* 결과 보기 버튼 추가 */}
+        <button>결과 보기</button>
+      </Link>
     </div>
   );
 };

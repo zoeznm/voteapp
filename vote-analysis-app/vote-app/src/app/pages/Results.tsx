@@ -1,7 +1,7 @@
 // Results.tsx
 
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import ResultChart from '../components/ResultChart';
 import { useVote } from '../hooks/useVote';
 import styled from 'styled-components';
@@ -32,12 +32,7 @@ const ResetButton = styled.button`
   }
 `;
 
-const ResetLink = styled(Link)`
-  display: inline-block;
-  text-decoration: none;
-`;
-
-const VoteButton = styled.button`
+const VoteAgainButton = styled.button`
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -45,6 +40,7 @@ const VoteButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 10px;
 
   &:hover {
     background-color: #0056b3;
@@ -52,25 +48,30 @@ const VoteButton = styled.button`
 `;
 
 const Results: React.FC = () => {
-  const { results, fetchResults, resetResults } = useVote();
+  const { results, fetchResults, resetResults, voteAgain } = useVote();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchResults(); // 컴포넌트가 마운트될 때 결과 가져오기
+    fetchResults();
   }, [fetchResults]);
 
   const handleReset = () => {
     resetResults();
-    fetchResults(); // 결과 초기화 호출
+    fetchResults();
+  };
+
+  // 투표 다시하기 버튼 클릭 시 동작
+  const handleVoteAgain = () => {
+    voteAgain();
+    navigate('/vote'); // 다시 투표 페이지로 이동
   };
 
   return (
     <Container>
       <Title>투표 결과</Title>
       <ResetButton onClick={handleReset}>결과 초기화</ResetButton>
-      <ResultChart results={results} /> {/* results를 props로 전달 */}
-      <ResetLink to="/vote">
-        <VoteButton>투표 다시 하기</VoteButton>
-      </ResetLink>
+      <ResultChart results={results} />
+      <VoteAgainButton onClick={handleVoteAgain}>투표 다시 하기</VoteAgainButton>
     </Container>
   );
 };

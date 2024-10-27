@@ -1,17 +1,15 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// App.tsx
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
 import AnalysisPage from './pages/AnalysisPage';
-// 다른 페이지 import...
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <Routes>
-        {/* 다른 라우트 */}
-        <Route path="/analysis" element={<AnalysisPage />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/analysis" element={<AnalysisPage />} />
+    </Routes>
   );
-}
+};
 
 export default App;

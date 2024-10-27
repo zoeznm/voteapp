@@ -1,55 +1,97 @@
-import React, { useEffect, useState } from 'react';
-import { useVote } from '@vote/app/hooks/useVote';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
-const AnalysisPage: React.FC = () => {
-  const { results, fetchResults } = useVote();
-  const [selectedTopic, setSelectedTopic] = useState<string>('all');
-  const [filteredResults, setFilteredResults] = useState(results);
+const Container = styled.div`
+  text-align: center;
+  margin-top: 50px;
+`;
+
+const Title = styled.h1`
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 30px;
+`;
+
+const Select = styled.select`
+  padding: 10px;
+  font-size: 1rem;
+  margin: 10px 0;
+`;
+
+const ResultContainer = styled.div`
+  margin-top: 20px;
+`;
+
+// voteData 타입 정의
+interface VoteData {
+  topic: string;
+  options: string[];
+  votes: Record<string, number>;
+}
+
+const Analysis: React.FC = () => {
+  const [voteData, setVoteData] = useState<VoteData[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState('');
+  const [filteredVotes, setFilteredVotes] = useState<Record<string, number>>(
+    {}
+  );
 
   useEffect(() => {
-    fetchResults();
-  }, [fetchResults]);
-
-  useEffect(() => {
-    if (selectedTopic === 'all') {
-      setFilteredResults(results);
-    } else {
-      setFilteredResults({
-        [selectedTopic]: results[selectedTopic],
-      });
+    // 로컬 스토리지에서 데이터 불러오기
+    const storedData = localStorage.getItem('voteData');
+    if (storedData) {
+      const data: VoteData = JSON.parse(storedData);
+      setVoteData([data]); // 배열로 감싸서 상태에 저장
     }
-  }, [selectedTopic, results]);
+  }, []);
 
   const handleTopicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTopic(e.target.value);
+    const topic = e.target.value;
+    setSelectedTopic(topic);
+
+    // 선택한 주제에 따라 투표 결과 필터링
+    if (topic) {
+      const selectedVote = voteData.find((vote) => vote.topic === topic);
+      setFilteredVotes(selectedVote ? selectedVote.votes : {});
+    } else {
+      setFilteredVotes({});
+    }
   };
 
   return (
-    <div>
-      <h2>투표 결과 분석</h2>
-      <label htmlFor="topicFilter">주제 선택: </label>
-      <select id="topicFilter" onChange={handleTopicChange}>
-        <option value="all">전체</option>
-        {Object.keys(results).map((topic) => (
-          <option key={topic} value={topic}>
-            {topic}
+    <Container>
+      <Title>투표 결과 분석</Title>
+      <label htmlFor="topicSelect">주제를 선택하세요:</label>
+      <Select
+        id="topicSelect"
+        value={selectedTopic}
+        onChange={handleTopicChange}
+        aria-label="주제를 선택하세요" // 접근성을 위한 aria-label 추가
+      >
+        <option value="">주제를 선택하세요</option>
+        {voteData.map((data, index) => (
+          <option key={index} value={data.topic}>
+            {data.topic}
           </option>
         ))}
-      </select>
-      <div>
-        {Object.entries(filteredResults).map(([topic, data]) => (
-          <div key={topic}>
-            <h3>{topic}</h3>
-            {Object.entries(data.options).map(([option, count]) => (
-              <p key={option}>
-                {option}: {count}표
-              </p>
+      </Select>
+
+      <ResultContainer>
+        {selectedTopic && (
+          <>
+            <h2>{selectedTopic}에 대한 투표 결과</h2>
+            {Object.entries(filteredVotes).map(([option, count]) => (
+              <div key={option}>
+                <span>
+                  {option}: {count}표
+                </span>
+              </div>
             ))}
-          </div>
-        ))}
-      </div>
-    </div>
+          </>
+        )}
+      </ResultContainer>
+    </Container>
   );
 };
 
-export default AnalysisPage;
+export default Analysis;

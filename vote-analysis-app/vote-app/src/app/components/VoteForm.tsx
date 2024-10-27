@@ -1,3 +1,5 @@
+// VoteForm.tsx
+
 import React, { useState } from 'react';
 import { useVote } from '../hooks/useVote';
 import styled from 'styled-components';
@@ -61,6 +63,7 @@ const SumitOptionbutton = styled.button`
     background-color: #dedede;
   }
 `;
+
 const VoteForm: React.FC = () => {
   const { submitVote, options, addOption } = useVote(); // addOption 추가
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -69,6 +72,10 @@ const VoteForm: React.FC = () => {
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
   };
+
+  // const handleResetOptions = () => {
+  //   resetOptions(); // 옵션 초기화 함수 호출
+  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,6 +116,7 @@ const VoteForm: React.FC = () => {
         </div>
         <SumitOptionbutton type="submit">제출</SumitOptionbutton>
       </form>
+      {/* <button onClick={handleResetOptions}>투표 다시하기</button> */}
     </FormContainer>
   );
 };

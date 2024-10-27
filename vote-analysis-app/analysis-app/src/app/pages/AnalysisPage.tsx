@@ -22,6 +22,20 @@ const ResultContainer = styled.div`
   margin-top: 20px;
 `;
 
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
 // voteData 타입 정의
 interface VoteData {
   topic: string;
@@ -38,10 +52,13 @@ const Analysis: React.FC = () => {
 
   useEffect(() => {
     // 로컬 스토리지에서 데이터 불러오기
-    const storedData = localStorage.getItem('voteData');
+    const storedData = localStorage.getItem('topics');
     if (storedData) {
-      const data: VoteData = JSON.parse(storedData);
-      setVoteData([data]); // 배열로 감싸서 상태에 저장
+      const data: VoteData[] = JSON.parse(storedData);
+      console.log("불러온 데이터:", data); // 데이터 확인용 로그 추가
+      setVoteData(data);
+    } else {
+      console.log("로컬 스토리지에 데이터가 없습니다.");
     }
   }, []);
 
@@ -58,9 +75,15 @@ const Analysis: React.FC = () => {
     }
   };
 
+  const clearData = () => {
+    localStorage.removeItem('topics');
+    alert('모든 투표 결과가 초기화되었습니다.');
+  };
+
   return (
     <Container>
       <Title>투표 결과 분석</Title>
+      <Button onClick={clearData} style={{ backgroundColor: '#dc3545' }}>초기화</Button> 
       <label htmlFor="topicSelect">주제를 선택하세요:</label>
       <Select
         id="topicSelect"

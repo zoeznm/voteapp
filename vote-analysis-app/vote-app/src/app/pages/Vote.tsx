@@ -1,5 +1,6 @@
+// Vote.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // useHistory 대신 useNavigate로 변경
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -33,39 +34,41 @@ const Button = styled.button`
   }
 `;
 
-const OptionInput = styled.input`
-  margin: 10px 0;
-`;
-
 const Vote: React.FC = () => {
   const [topic, setTopic] = useState('');
   const [options, setOptions] = useState<string[]>([]);
   const [newOption, setNewOption] = useState('');
   const [votes, setVotes] = useState<Record<string, number>>({});
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 기능 추가
+  const navigate = useNavigate();
 
   const addOption = () => {
     if (newOption && !options.includes(newOption)) {
       setOptions([...options, newOption]);
+      setVotes({ ...votes, [newOption]: 0 }); // 새로운 옵션의 투표 수를 0으로 초기화
       setNewOption('');
     }
   };
 
+  // handleVote 함수 추가: 특정 옵션의 투표 수를 증가시킴
   const handleVote = (option: string) => {
     setVotes((prevVotes) => ({
       ...prevVotes,
-      [option]: (prevVotes[option] || 0) + 1,
+      [option]: prevVotes[option] + 1,
     }));
-    alert('투표가 완료되었습니다.'); // 알림 추가
   };
 
   const handleSubmit = () => {
-    // 로컬 스토리지에 주제와 옵션 저장
-    const voteData = { topic, options, votes };
-    localStorage.setItem('voteData', JSON.stringify(voteData));
-    
-    // 결과 페이지로 이동
-    navigate('/results'); // 결과 페이지로 이동
+    const voteData = {
+      topic,
+      options,
+      votes,
+    };
+
+    const storedTopics = JSON.parse(localStorage.getItem('topics') || '[]');
+    storedTopics.push(voteData);
+    localStorage.setItem('topics', JSON.stringify(storedTopics));
+
+    navigate('/results');
   };
 
   return (
@@ -77,14 +80,14 @@ const Vote: React.FC = () => {
         value={topic}
         onChange={(e) => setTopic(e.target.value)}
       />
-      <OptionInput
+      <Input
         type="text"
         placeholder="투표 옵션 추가"
         value={newOption}
         onChange={(e) => setNewOption(e.target.value)}
       />
       <Button onClick={addOption}>옵션 추가</Button>
-      
+
       <h2>투표 옵션</h2>
       {options.map((option) => (
         <div key={option}>

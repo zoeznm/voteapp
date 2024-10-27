@@ -1,45 +1,17 @@
-// src/app/app.tsx
-import React, { useState } from 'react';
-import { useFetchVotes } from './hooks/useFetchVotes';
-import DataDisplay from './components/DataDisplay';
-import BarChart from './components/BarChart';
-import FilterOptions from './components/FilterOptions';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AnalysisPage from './pages/AnalysisPage';
+// 다른 페이지 import...
 
-const App: React.FC = () => {
-  const { votesData, loading } = useFetchVotes();
-  const [filter, setFilter] = useState('all');
-
-  const handleFilterChange = (selectedFilter: string) => {
-    setFilter(selectedFilter);
-  };
-
-  const getFilteredData = () => {
-    if (filter === 'top') {
-      return Object.fromEntries(
-        Object.entries(votesData)
-          .sort(([, a], [, b]) => b - a)
-          .slice(0, 5)
-      );
-    } else if (filter === 'recent') {
-      return votesData; // 나중에 최근 데이터로 정렬
-    }
-    return votesData; // 전체 데이터
-  };
-
-  if (loading) {
-    return <p>로딩 중...</p>;
-  }
-
-  const filteredData = getFilteredData();
-
+function App() {
   return (
-    <div>
-      <h1>Analysis App</h1>
-      <FilterOptions onFilterChange={handleFilterChange} />
-      <DataDisplay votesData={filteredData} />
-      <BarChart data={filteredData} />
-    </div>
+    <Router>
+      <Routes>
+        {/* 다른 라우트 */}
+        <Route path="/analysis" element={<AnalysisPage />} />
+      </Routes>
+    </Router>
   );
-};
+}
 
 export default App;

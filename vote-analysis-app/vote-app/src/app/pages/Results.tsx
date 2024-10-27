@@ -1,79 +1,29 @@
-// Results.tsx
-
 import React, { useEffect } from 'react';
-import {useNavigate } from 'react-router-dom';
-import ResultChart from '../components/ResultChart';
-import { useVote } from '../hooks/useVote';
-import styled from 'styled-components';
+import { Bar } from 'react-chartjs-2';
+import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
-const Container = styled.div`
-  text-align: center;
-  margin-top: 50px;
-`;
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend); // 필요한 스케일 및 요소 등록
 
-const Title = styled.h2`
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
-`;
+const Result: React.FC = () => {
+  const voteData = JSON.parse(localStorage.getItem('voteData') || '{}');
 
-const ResetButton = styled.button`
-  padding: 10px 20px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #c82333;
-  }
-`;
-
-const VoteAgainButton = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 10px;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const Results: React.FC = () => {
-  const { results, fetchResults, resetResults, voteAgain } = useVote();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchResults();
-  }, [fetchResults]);
-
-  const handleReset = () => {
-    resetResults();
-    fetchResults();
-  };
-
-  // 투표 다시하기 버튼 클릭 시 동작
-  const handleVoteAgain = () => {
-    voteAgain();
-    navigate('/vote'); // 다시 투표 페이지로 이동
+  const data = {
+    labels: Object.keys(voteData.votes),
+    datasets: [
+      {
+        label: '투표 결과',
+        data: Object.values(voteData.votes),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+      },
+    ],
   };
 
   return (
-    <Container>
-      <Title>투표 결과</Title>
-      <ResetButton onClick={handleReset}>결과 초기화</ResetButton>
-      <ResultChart results={results} />
-      <VoteAgainButton onClick={handleVoteAgain}>투표 다시 하기</VoteAgainButton>
-    </Container>
+    <div>
+      <h1>{voteData.topic}</h1>
+      <Bar data={data} />
+    </div>
   );
 };
 
-export default Results;
+export default Result;

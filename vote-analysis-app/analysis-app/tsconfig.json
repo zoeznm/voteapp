@@ -5,10 +5,6 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "baseUrl": "src",
-    "paths": {
-      "@vote/*": ["../../vote-app/src/*"]
-    }
   },
   "files": [],
   "include": [],

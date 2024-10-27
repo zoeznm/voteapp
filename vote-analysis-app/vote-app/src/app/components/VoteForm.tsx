@@ -1,5 +1,3 @@
-// VoteForm.tsx
-
 import React, { useState } from 'react';
 import { useVote } from '../hooks/useVote';
 import styled from 'styled-components';
@@ -50,7 +48,8 @@ const AddOptionButton = styled.button`
     background-color: #218838;
   }
 `;
-const SumitOptionbutton = styled.button`
+
+const SubmitOptionButton = styled.button`
   padding: 10px 20px;
   background-color: purple;
   color: white;
@@ -65,32 +64,32 @@ const SumitOptionbutton = styled.button`
 `;
 
 const VoteForm: React.FC = () => {
-  const { submitVote, options, addOption } = useVote(); // addOption 추가
+  const { submitVote, options, addOption, resetOptions } = useVote();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [newOption, setNewOption] = useState<string>(''); // 새로운 옵션 상태 추가
+  const [newOption, setNewOption] = useState<string>('');
+  const [topic, setTopic] = useState<string>(''); // 주제 상태 추가
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
   };
 
-  // const handleResetOptions = () => {
-  //   resetOptions(); // 옵션 초기화 함수 호출
-  // };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (selectedOption) {
-      submitVote(selectedOption);
+    if (selectedOption && topic) {
+      submitVote(selectedOption, topic); // 주제도 함께 전달
       alert('투표가 완료되었습니다!');
+      resetOptions(); // 투표 후 선택 초기화
+    } else {
+      alert('주제와 옵션을 선택해 주세요.');
     }
   };
 
   const handleAddOption = () => {
-    if (newOption) {
-      addOption(newOption); // 새로운 옵션 추가
-      setNewOption(''); // 입력 필드 초기화
+    if (newOption && topic) {
+      addOption(topic, newOption); // 주제도 함께 전달
+      setNewOption('');
     } else {
-      alert('옵션을 입력해 주세요.');
+      alert('옵션과 주제를 입력해 주세요.');
     }
   };
 
@@ -98,7 +97,15 @@ const VoteForm: React.FC = () => {
     <FormContainer>
       <Title>투표하기</Title>
       <form onSubmit={handleSubmit}>
-        {options.map((option) => (
+        <div>
+          <AddOptionInput
+            type="text"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="투표 주제 입력"
+          />
+        </div>
+        {options[topic]?.map((option) => (
           <OptionButton key={option} onClick={() => handleOptionSelect(option)}>
             {option}
           </OptionButton>
@@ -114,9 +121,9 @@ const VoteForm: React.FC = () => {
             추가
           </AddOptionButton>
         </div>
-        <SumitOptionbutton type="submit">제출</SumitOptionbutton>
+        <SubmitOptionButton type="submit">제출</SubmitOptionButton>
       </form>
-      {/* <button onClick={handleResetOptions}>투표 다시하기</button> */}
+      <button onClick={resetOptions}>투표 다시하기</button>
     </FormContainer>
   );
 };

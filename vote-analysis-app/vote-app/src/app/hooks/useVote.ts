@@ -1,6 +1,6 @@
-import { useState } from 'react';
+// useVote.ts
 
-// 초기 옵션 설정 제거
+import { useState } from 'react';
 
 export const useVote = () => {
   const [results, setResults] = useState<Record<string, number>>(() => {
@@ -8,7 +8,7 @@ export const useVote = () => {
     return savedResults ? JSON.parse(savedResults) : {};
   });
 
-  const [options, setOptions] = useState<string[]>([]); // 초기 옵션 배열을 빈 배열로 설정
+  const [options, setOptions] = useState<string[]>([]);
 
   const submitVote = (option: string) => {
     setResults((prevResults) => {
@@ -28,19 +28,35 @@ export const useVote = () => {
   const resetResults = () => {
     localStorage.removeItem('results');
     setResults({});
-    setOptions([]); // 결과를 초기화할 때 옵션도 초기화
+    setOptions([]);
+  };
+
+  const voteAgain = () => {
+    localStorage.removeItem('results');  // 이전 투표 결과 초기화
+    localStorage.removeItem('options');  // 이전 옵션 초기화
+    setResults({});
+    setOptions([]);
   };
 
   const addOption = (newOption: string) => {
     setOptions((prevOptions) => [...prevOptions, newOption]);
     setResults((prevResults) => ({
       ...prevResults,
-      [newOption]: 0, // 새로운 옵션에 대한 초기 투표 수를 0으로 설정
-    }));
-    localStorage.setItem('results', JSON.stringify({
-      ...JSON.parse(localStorage.getItem('results') || '{}'),
       [newOption]: 0,
     }));
+    localStorage.setItem(
+      'results',
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem('results') || '{}'),
+        [newOption]: 0,
+      })
+    );
+  };
+
+  // 추가된 resetOptions 함수 - 옵션만 초기화
+  const resetOptions = () => {
+    localStorage.removeItem('options');
+    setOptions([]);
   };
 
   return {
@@ -49,6 +65,8 @@ export const useVote = () => {
     resetResults,
     submitVote,
     options,
-    addOption, // addOption을 반환
+    addOption,
+    voteAgain,
+    resetOptions, // resetOptions 반환 추가
   };
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {Button} from '@vote-analysis-app/shared-ui'
+import { Button } from '@vote-analysis-app/shared-ui';
+import BarChart from '../components/BarChart'; // BarChart 컴포넌트 import
 
 const Container = styled.div`
   text-align: center;
@@ -23,7 +24,6 @@ const ResultContainer = styled.div`
   margin-top: 20px;
 `;
 
-
 // voteData 타입 정의
 interface VoteData {
   topic: string;
@@ -34,9 +34,7 @@ interface VoteData {
 const Analysis: React.FC = () => {
   const [voteData, setVoteData] = useState<VoteData[]>([]);
   const [selectedTopic, setSelectedTopic] = useState('');
-  const [filteredVotes, setFilteredVotes] = useState<Record<string, number>>(
-    {}
-  );
+  const [filteredVotes, setFilteredVotes] = useState<Record<string, number>>({});
 
   useEffect(() => {
     // 로컬 스토리지에서 데이터 불러오기
@@ -98,6 +96,8 @@ const Analysis: React.FC = () => {
                 </span>
               </div>
             ))}
+            {/* BarChart 컴포넌트를 추가하여 차트를 표시 */}
+            <BarChart data={filteredVotes} />
           </>
         )}
       </ResultContainer>

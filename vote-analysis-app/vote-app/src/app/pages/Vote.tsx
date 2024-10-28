@@ -1,7 +1,7 @@
-// Vote.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import {Button} from '@vote-app/shared-ui';
 
 const Container = styled.div`
   text-align: center;
@@ -20,20 +20,6 @@ const Input = styled.input`
   margin: 10px 0;
 `;
 
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  margin-top: 20px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
 const Vote: React.FC = () => {
   const [topic, setTopic] = useState('');
   const [options, setOptions] = useState<string[]>([]);
@@ -49,7 +35,6 @@ const Vote: React.FC = () => {
     }
   };
 
-  // handleVote 함수 추가: 특정 옵션의 투표 수를 증가시킴
   const handleVote = (option: string) => {
     setVotes((prevVotes) => ({
       ...prevVotes,
@@ -86,17 +71,17 @@ const Vote: React.FC = () => {
         value={newOption}
         onChange={(e) => setNewOption(e.target.value)}
       />
-      <Button onClick={addOption}>옵션 추가</Button>
+      <Button color="#007bff" onClick={addOption}>옵션 추가</Button>
 
       <h2>투표 옵션</h2>
       {options.map((option) => (
         <div key={option}>
           <span>{option}</span>
-          <Button onClick={() => handleVote(option)}>투표</Button>
+          <Button color="#28a745" onClick={() => handleVote(option)}>투표</Button>
         </div>
       ))}
 
-      <Button onClick={handleSubmit}>결과 보기</Button>
+      <Button color="#17a2b8" onClick={handleSubmit}>결과 보기</Button>
     </Container>
   );
 };

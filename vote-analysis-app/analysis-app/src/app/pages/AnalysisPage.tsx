@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '@vote-analysis-app/shared-ui';
-import BarChart from '../components/BarChart'; // BarChart 컴포넌트 import
+import { Chart } from '@vote-analysis-app/shared-ui';
+
 
 const Container = styled.div`
   text-align: center;
@@ -75,7 +76,7 @@ const Analysis: React.FC = () => {
         id="topicSelect"
         value={selectedTopic}
         onChange={handleTopicChange}
-        aria-label="주제를 선택하세요" // 접근성을 위한 aria-label 추가
+        aria-label="주제를 선택하세요"
       >
         <option value="">주제를 선택하세요</option>
         {voteData.map((data, index) => (
@@ -96,8 +97,8 @@ const Analysis: React.FC = () => {
                 </span>
               </div>
             ))}
-            {/* BarChart 컴포넌트를 추가하여 차트를 표시 */}
-            <BarChart data={filteredVotes} />
+            {/* 공통 Chart 컴포넌트를 사용 */}
+            <Chart type="bar" data={filteredVotes} title="투표 수" />
           </>
         )}
       </ResultContainer>

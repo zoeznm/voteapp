@@ -1,5 +1,5 @@
 {
-  "name": "shared-ui",
+  "name": "@vote-app/shared-ui",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "shared-ui/src",
   "projectType": "library",

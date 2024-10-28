@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import {Button} from '@vote-analysis-app/shared-ui'
 
 const Container = styled.div`
   text-align: center;
@@ -22,19 +23,6 @@ const ResultContainer = styled.div`
   margin-top: 20px;
 `;
 
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  margin-top: 20px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
 
 // voteData 타입 정의
 interface VoteData {
@@ -83,7 +71,7 @@ const Analysis: React.FC = () => {
   return (
     <Container>
       <Title>투표 결과 분석</Title>
-      <Button onClick={clearData} style={{ backgroundColor: '#dc3545' }}>초기화</Button> 
+      <Button onClick={clearData} color="#dc3545">초기화</Button>
       <label htmlFor="topicSelect">주제를 선택하세요:</label>
       <Select
         id="topicSelect"

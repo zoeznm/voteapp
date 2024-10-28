@@ -4,19 +4,33 @@
   "sourceRoot": "vote-app/src",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project vote-app --web",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:build",
+      "executor": "@nx/webpack:webpack",
       "options": {
         "outputPath": "dist/vote-app",
         "index": "vote-app/src/index.html",
         "main": "vote-app/src/main.tsx",
-        "polyfills": "vote-app/src/polyfills.ts", 
-        "tsConfig": "vote-app/tsconfig.app.json", 
+        "tsConfig": "vote-app/tsconfig.app.json",
         "assets": ["vote-app/src/favicon.ico", "vote-app/src/assets"],
-        "styles": ["vote-app/src/styles.css"], 
-        "scripts": [] 
+        "styles": ["vote-app/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "vote-app/webpack.config.js" 
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "fileReplacements": [
+            {
+              "replace": "vote-app/src/environments/environment.ts",
+              "with": "vote-app/src/environments/environment.prod.ts"
+            }
+          ]
+        }
       }
     }
   }

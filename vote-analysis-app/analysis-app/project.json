@@ -4,6 +4,34 @@
   "sourceRoot": "analysis-app/src",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project analysis-app --web",
-  "targets": {}
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "outputPath": "dist/analysis-app",
+        "index": "analysis-app/src/index.html",
+        "main": "analysis-app/src/main.tsx", 
+        "tsConfig": "analysis-app/tsconfig.app.json", 
+        "assets": ["analysis-app/src/favicon.ico", "analysis-app/src/assets"],
+        "styles": ["analysis-app/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "analysis-app/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "fileReplacements": [
+            {
+              "replace": "analysis-app/src/environments/environment.ts", 
+              "with": "analysis-app/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    }
+  }
 }

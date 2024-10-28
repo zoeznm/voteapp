@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -19,7 +20,7 @@
     {
       "plugin": "@nx/webpack/plugin",
       "options": {
-        "buildTargetName": "build",
+        "buildTargetName": "webpack-build",
         "serveTargetName": "serve",
         "previewTargetName": "preview"
       }
@@ -45,7 +46,7 @@
     {
       "plugin": "@nx/vite/plugin",
       "options": {
-        "buildTargetName": "build",
+        "buildTargetName": "vite-build",
         "testTargetName": "test",
         "serveTargetName": "serve",
         "previewTargetName": "preview",
@@ -55,6 +56,9 @@
     }
   ],
   "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"]
     }
